@@ -36,10 +36,14 @@ function lib.notify(data)
     payload.sound = nil
     payload.position = payload.position or settings.notification_position
 
-    SendNUIMessage({
-        action = 'notify',
-        data = payload
-    })
+    if GetResourceState('af_core') == 'started' or GetResourceState('qbx_core') == 'started' then
+        TriggerEvent('qbx_core:client:notify', payload)
+    else
+        SendNUIMessage({
+            action = 'notify',
+            data = payload
+        })
+    end
 
     if not sound then return end
 
